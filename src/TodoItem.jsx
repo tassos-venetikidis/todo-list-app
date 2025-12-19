@@ -23,11 +23,7 @@ function TodoItem({ todo, deleteTodo, toggleCompleted }) {
         }
         disablePadding
       >
-        <ListItemButton
-          role={"button"}
-          onClick={() => toggleCompleted(todo.id)}
-          dense
-        >
+        <ListItemButton role={"button"} dense>
           <ListItemIcon>
             <Checkbox
               edge="start"
@@ -35,6 +31,7 @@ function TodoItem({ todo, deleteTodo, toggleCompleted }) {
               tabIndex={-1}
               disableRipple
               inputProps={{ "aria-labelledby": labelId }}
+              onChange={() => toggleCompleted(todo.id)}
             />
           </ListItemIcon>
           <ListItemText id={labelId} primary={todo.text} />

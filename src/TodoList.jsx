@@ -1,9 +1,9 @@
-import CssBaseline from "@mui/material/CssBaseline";
-import { TextField, Button } from "@mui/material";
+import { Typography } from "@mui/material";
+import Box from "@mui/material/Box";
 import { useState, useEffect } from "react";
-import { v4 as uuid } from "uuid";
 import List from "@mui/material/List";
 import TodoItem from "./TodoItem.jsx";
+import TodoForm from "./TodoForm.jsx";
 
 function getTodosFromStorage() {
   const storedTodos = JSON.parse(localStorage.getItem("todos"));
@@ -16,19 +16,10 @@ function getTodosFromStorage() {
 
 function TodoList() {
   const [todos, setTodos] = useState(getTodosFromStorage);
-  const [todoInput, setTodoInput] = useState("");
 
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
-
-  function handleClick() {
-    setTodoInput("");
-    setTodos((previousTodos) => [
-      ...previousTodos,
-      { id: uuid(), text: todoInput, completed: false },
-    ]);
-  }
 
   function toggleCompleted(id) {
     setTodos(
@@ -48,30 +39,35 @@ function TodoList() {
 
   return (
     <>
-      <TextField
-        id="outlined-basic"
-        label="New Todo"
-        variant="outlined"
-        value={todoInput}
-        onChange={(e) => setTodoInput(e.target.value)}
-      />
-      <Button variant="contained" onClick={handleClick}>
-        Submit
-      </Button>
-      {todos.length > 0 && (
-        <List
-          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-        >
-          {todos.map((todo) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              deleteTodo={deleteTodo}
-              toggleCompleted={toggleCompleted}
-            />
-          ))}
-        </List>
-      )}
+      <Box
+        sx={{
+          marginTop: 5,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 5,
+        }}
+      >
+        <Typography variant="h2" component="h1" sx={{ flexGrow: 1 }}>
+          Todos
+        </Typography>
+        <TodoForm addToTodosFn={setTodos} />
+        {todos.length > 0 && (
+          <List
+            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          >
+            {todos.map((todo) => (
+              <TodoItem
+                key={todo.id}
+                todo={todo}
+                deleteTodo={deleteTodo}
+                toggleCompleted={toggleCompleted}
+              />
+            ))}
+          </List>
+        )}
+      </Box>
     </>
   );
 }
